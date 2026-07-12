@@ -1,0 +1,42 @@
+.add-user-heading {
+  text-align: center;
+}
+
+.add-user {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.add-user-input {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  max-width: 500px;
+}
+
+.add-user-input label {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.add-user-input input {
+  padding: 10px;
+}
+
+.create-user-btn {
+  text-align: center;
+}
+
+@media screen and (max-width: 768px) {
+  .add-user-input {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .add-user-input input {
+    padding: 10px;
+  }
+}

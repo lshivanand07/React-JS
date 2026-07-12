@@ -1,0 +1,41 @@
+.mobile-menu {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .mobile-menu {
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 2px;
+    box-shadow: 0px 0px 10px black;
+    position: sticky;
+    bottom: 0px;
+    background-color: white;
+  }
+
+  .home,
+  .profile,
+  .mobile-cart,
+  .mobile-order {
+    width: 30px;
+    height: auto;
+  }
+
+  .home img,
+  .profile img,
+  .mobile-cart img,
+  .mobile-order img {
+    width: 100%;
+    object-fit: contain;
+  }
+
+  .home p,
+  .profile p,
+  .mobile-cart p,
+  .mobile-order p {
+    margin: 0;
+    font-size: 10px;
+  }
+}

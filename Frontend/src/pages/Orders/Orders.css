@@ -1,0 +1,102 @@
+.orders {
+  min-height: 400px;
+  padding: 0px 20px;
+}
+.orders-heading {
+  text-align: center;
+}
+
+.order-items {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin: 10px 0px;
+}
+
+.items-cards {
+  border: 2px solid black;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.items-cards p {
+  max-width: 330px;
+  height: 40px;
+  overflow-y: hidden;
+  margin: 0;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.order-addresses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0px;
+}
+
+.user-address-status {
+  text-transform: uppercase;
+}
+
+select {
+  cursor: pointer;
+}
+
+.total-price {
+  color: green;
+  background-color: white;
+}
+
+.order-address-card {
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.selected-address {
+  border: 2px solid green;
+}
+
+.order-confirm-cancel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin: 10px;
+}
+
+@media screen and (max-width: 425px) {
+  .overlay {
+    position: relative;
+  }
+
+  .order-addresses {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+
+  .order-address-card {
+    padding: 5px;
+  }
+
+  .overlay select {
+    min-width: 200px;
+  }
+  .order-address-card p {
+    margin: 0px;
+    min-width: 200px;
+  }
+}

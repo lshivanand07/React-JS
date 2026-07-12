@@ -1,0 +1,36 @@
+footer {
+  background-color: rgb(26, 25, 25);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.footer p {
+  color: rgb(94, 93, 93);
+}
+
+.footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.About {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.GROUP-COMPANIES {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.HELP {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
