@@ -36,6 +36,7 @@ function OneProductDetails({
   PopupModel,
 }: Readonly<ProductDetails>) {
   const item = productItems;
+  console.log('item', item.image)
 
   const [selectedVariantItem, setSelectedVariantItem] = useState({
     color: '',
@@ -182,7 +183,7 @@ const ProductContainer = () => {
   const dispatch = useDispatch();
   const productItems = useSelector((state: any) => state.product.productItem);
 
-  console.log(productItems);
+  console.log('hi',productItems);
 
   const productData = async () => {
     try {

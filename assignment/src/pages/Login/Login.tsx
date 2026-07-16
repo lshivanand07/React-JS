@@ -142,11 +142,12 @@ function LoginContainer() {
       }
 
       const data = await fetchLoginDetails(loginData);
+      console.log('data',data)
       if (data.token) {
         setAuthenticated(true);
         const userToken = {
           token: data.token,
-          role: data.user_role,
+          role: data.user.user_role,
         };
         localStorage.setItem('userToken', JSON.stringify(userToken));
         console.log(localStorage.getItem('userToken'));

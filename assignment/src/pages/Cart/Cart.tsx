@@ -146,6 +146,8 @@ const CartDataContainer = () => {
     variantID: number;
   }
 
+  console.log('m', message);
+
   const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
 
   const dispatch = useDispatch();
@@ -157,7 +159,6 @@ const CartDataContainer = () => {
       console.log(data);
       dispatch(setCart(data));
       setMessage(data.message);
-      console.log(data);
     } catch (error) {
       setServerError(error);
     } finally {

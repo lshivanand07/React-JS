@@ -71,6 +71,7 @@ function HomeContainer() {
 
   const dispatch = useDispatch();
   const products = useSelector((state: any) => state.product.productItem);
+  console.log(products)
 
   const fetchProducts = async () => {
     try {

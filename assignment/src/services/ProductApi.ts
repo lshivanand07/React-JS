@@ -2,7 +2,9 @@
 import api from './api';
 
 export async function fetchProductDetails() {
+  console.log('hi')
   const response = await api.get(`/get-all-products`);
+  console.log('p',response.data)
   return response.data;
 }
 

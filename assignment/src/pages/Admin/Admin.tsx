@@ -426,7 +426,9 @@ function AdminContainer() {
   const getDashboardRecord = useCallback(async () => {
     try {
       setLoading(true);
+      console.log('hi')
       const data = await fetchFlipkartRecords();
+      console.log('records',data)
       setDashboardRecord(data);
       setShowDashboard(true);
       navigate('/admin/dashboard');
