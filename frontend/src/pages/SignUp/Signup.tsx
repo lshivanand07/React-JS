@@ -141,7 +141,6 @@ function SignupContainer() {
   const [serverError, setServerError] = useState<any>(false);
   const [loading, setLoading] = useState(false);
   const [showPopup, setShowPopup] = useState<boolean>(false);
-
   const userRegistration = async (event: React.SyntheticEvent<HTMLElement>) => {
     try {
       event.preventDefault();

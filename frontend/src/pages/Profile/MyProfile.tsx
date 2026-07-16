@@ -291,7 +291,7 @@ function MyProfileContainer() {
         return;
       }
       const data = await editUser(editedProfileData);
-      console.log(data);
+      console.log("data",data);
       setMessage(data.message);
       setShowPopup(true);
     } catch (error: any) {
