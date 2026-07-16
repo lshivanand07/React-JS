@@ -1,0 +1,49 @@
+.product-input-div {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  max-width: 500px;
+  margin-bottom: 15px;
+}
+
+.product-input-div input,
+.product-input-div textarea {
+  margin-top: 5px;
+  padding: 10px;
+}
+
+.product-heading {
+  text-align: center;
+}
+
+.product,
+.discount,
+.product-variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .product-input-div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 15px;
+  }
+
+  .product-input-div input,
+  .product-input-div textarea {
+    margin-top: 5px;
+    padding: 10px;
+  }
+}

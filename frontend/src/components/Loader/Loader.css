@@ -1,0 +1,18 @@
+.loader {
+  border: 10px solid rgb(236, 230, 230);
+  border-top-color: rgb(50, 50, 52);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s linear infinite;
+  margin: 10px auto;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,92 @@
+.login-section {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-image: url('../../assets/login.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.go-to-home {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.go-to-home img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.login-div {
+  backdrop-filter: blur(50px);
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+}
+
+.login-div h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #002fff;
+}
+
+.login-div label {
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.login-div input {
+  padding: 12px;
+  margin-top: 5px;
+  border-radius: 8px;
+  font-size: 15px;
+  border: none;
+}
+
+.login-div input:focus {
+  outline: none;
+  box-shadow: 0px 0px 10px green;
+}
+
+.login-div button {
+  font-weight: 600;
+  margin-top: 10px;
+  margin-top: 25px;
+  padding: 14px;
+  border: none;
+  border-radius: 40px;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .login-div {
+    padding: 25px;
+  }
+
+  .go-to-home {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 50px;
+    height: 50px;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}

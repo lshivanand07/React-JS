@@ -1,0 +1,103 @@
+.cart-heading {
+  text-align: center;
+}
+
+.carts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0px 20px;
+  min-height: 400px;
+}
+
+.cart {
+  border: 2px solid black;
+  padding: 20px;
+  border-radius: 20px;
+  width: 300px;
+}
+
+.cart p {
+  font-size: 18px;
+}
+
+.Edit-Delete-btn {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  background-color: rgb(225, 224, 224);
+  gap: 20px;
+}
+.palce-order-btn {
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px black;
+  position: sticky;
+  bottom: 0px;
+  left: 0px;
+  background-color: white;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+  gap: 20px;
+}
+
+.palce-order-btn h2 {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.empty-cart-div h3 {
+  min-height: 400px;
+  text-align: center;
+  font-size: 30px;
+}
+
+.userConformationBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+@media screen and (max-width: 768px) {
+  .carts {
+    justify-content: center;
+    padding: 10px;
+    gap: 15px;
+  }
+
+  .cart {
+    width: 100%;
+    max-width: 350px;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .cart p {
+    font-size: 16px;
+  }
+
+  .Edit-Delete-btn {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .palce-order-btn {
+    width: 100%;
+    padding: 15px;
+
+    box-sizing: border-box;
+  }
+
+  .userConformationBtn {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .empty-cart-div h3 {
+    font-size: 22px;
+  }
+}
+
