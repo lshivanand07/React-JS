@@ -12,6 +12,7 @@ import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import { fetchProductDetails, deleteProduct } from '../../services/ProductApi';
 import { fetchFlipkartRecords } from '../../services/dashboardApi';
 import { allOrders, editOrderStatus } from '../../services/ordersApi';
+import { useSelector } from 'react-redux';
 
 const customStyles = {
   headRow: {
@@ -75,22 +76,22 @@ function AdminPage({
               <button onClick={getDashboardRecord}>Dashboard</button>
             </div>
             <div className="buttons-div">
-              <button onClick={() => getUsersByRole('')}>Users</button>
+              <button onClick={() =>  navigate('/admin/users')}>Users</button>
             </div>
             <div className="buttons-div">
-              <button onClick={getProducts}>Products</button>
+              <button onClick={()=> navigate('/admin/products')}>Products</button>
             </div>
             <div className="buttons-div">
-              <button onClick={getOrders}> Orders</button>
+              <button onClick={()=> navigate('/admin/orders')}> Orders</button>
             </div>
             <div className="buttons-div">
-              <button onClick={() => getUsersByRole('customer')}>
+              <button onClick={() =>  navigate('/admin/customer')}>
                 {' '}
                 Customers
               </button>
             </div>
             <div className="buttons-div">
-              <button onClick={() => getUsersByRole('seller')}>Sellers</button>
+              <button onClick={() =>  navigate('/admin/seller')}>Sellers</button>
             </div>
             <div className="buttons-div">
               <button onClick={adminLogout}> Logout</button>
@@ -190,17 +191,13 @@ const EnhancedAdmin = withLoader(withErrorHandling(AdminPage));
 const getUserColumns = (deleteOneUser: (id: number) => void) => [
   { name: 'ID', cell: (row: any) => (
   <>
-    {row.user_id}
+    {row.User_id}
     {!row.admin_viewed && (
       <span className="new-badge">NEW</span>
     )}
   </>
 ), sortable: true },
-  {
-    name: 'Name',
-    selector: (row: any) => row.user_name?.toLowerCase(),
-    sortable: true,
-  },
+  { name: 'Name', selector: (row: any) => row.user_name?.toLowerCase(), sortable: true,},
   { name: 'Email', selector: (row: any) => row.email, sortable: true },
   { name: 'DOB', selector: (row: any) => row.dob, sortable: true },
   { name: 'Age', selector: (row: any) => row.age, sortable: true },
@@ -402,7 +399,6 @@ function AdminContainer() {
       const users = await fetchAllUser();
 
       if (!role) {
-        navigate('/admin/users');
         setData(users[0]);
         setFilterData(users[0]);
         setColumns(userColumnsMapped);
@@ -415,7 +411,6 @@ function AdminContainer() {
       );
       setData(filteredUsers);
       setFilterData(filteredUsers);
-      navigate(`/admin/${role}`);
       setColumns(userColumnsMapped);
       setShowDashboard(false);
     } catch (error) {
@@ -474,7 +469,9 @@ function AdminContainer() {
     }
   }, [navigate, orderColumnsMapped]);
 
+  console.log("Users component rendered");
   useEffect(() => {
+     console.log("Fetching users...");
     if (location.pathname === '/admin/users') {
       getUsersByRole('');
     } else if (location.pathname === '/admin/customer') {
