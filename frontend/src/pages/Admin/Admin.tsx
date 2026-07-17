@@ -214,7 +214,14 @@ const getUserColumns = (deleteOneUser: (id: number) => void) => [
 ];
 
 const getProductColumns = (deleteOneProduct: (id: number) => void) => [
-  { name: 'ID', selector: (row: any) => row.product_id, sortable: true },
+  { name: 'ID', cell: (row: any) => (
+  <>
+    {row.product_id}
+    {!row.admin_viewed && (
+      <span className="new-badge">NEW</span>
+    )}
+  </>
+), sortable: true },
   {
     name: 'image',
     cell: (row: any) => (
@@ -254,7 +261,14 @@ const getProductColumns = (deleteOneProduct: (id: number) => void) => [
 ];
 
 const getOrderColumns = (editUserOrder: (payload: any) => void) => [
-  { name: 'ID', selector: (row: any) => row.order_id, sortable: true },
+  { name: 'ID', cell: (row: any) => (
+  <>
+    {row.order_id}
+    {!row.admin_viewed && (
+      <span className="new-badge">NEW</span>
+    )}
+  </>
+), sortable: true },
   {
     name: 'User',
     selector: (row: any) => row.user_name?.toLowerCase(),
