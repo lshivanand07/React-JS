@@ -12,7 +12,6 @@ import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import { fetchProductDetails, deleteProduct } from '../../services/ProductApi';
 import { fetchFlipkartRecords } from '../../services/dashboardApi';
 import { allOrders, editOrderStatus } from '../../services/ordersApi';
-import { useSelector } from 'react-redux';
 
 const customStyles = {
   headRow: {
@@ -43,9 +42,6 @@ interface AdminProps {
 function AdminPage({
   adminLogout,
   filterRecord,
-  getUsersByRole,
-  getProducts,
-  getOrders,
   getDashboardRecord,
   dashboardRecord,
   showDashboard,
