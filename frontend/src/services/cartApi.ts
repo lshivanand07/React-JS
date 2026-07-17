@@ -12,6 +12,7 @@ interface SelectedItem {
 }
 
 export async function addCartItems(payload: SelectedItem) {
+  console.log("f, cart: ",payload)
   const response = await api.post('/post-user-cart', payload);
   return response.data;
 }

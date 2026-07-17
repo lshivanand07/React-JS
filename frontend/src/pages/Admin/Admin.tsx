@@ -158,6 +158,8 @@ function AdminPage({
                   paginationPerPage={5}
                   paginationRowsPerPageOptions={[5, 10, 20, 50]}
                   responsive
+                    expandableRows
+                 expandableRowsComponent={ExpandedComponent}
                 />
               </>
             )}
@@ -186,7 +188,14 @@ function AdminPage({
 const EnhancedAdmin = withLoader(withErrorHandling(AdminPage));
 
 const getUserColumns = (deleteOneUser: (id: number) => void) => [
-  { name: 'ID', selector: (row: any) => row.User_id, sortable: true },
+  { name: 'ID', cell: (row: any) => (
+  <>
+    {row.user_id}
+    {!row.admin_viewed && (
+      <span className="new-badge">NEW</span>
+    )}
+  </>
+), sortable: true },
   {
     name: 'Name',
     selector: (row: any) => row.user_name?.toLowerCase(),
@@ -299,6 +308,15 @@ const getOrderColumns = (editUserOrder: (payload: any) => void) => [
   },
 ];
 
+const ExpandedComponent = ({ data }: any) => (
+  <div className="expanded-box">
+    {Object.entries(data).map(([key, value]) => (
+      <div key={key} className="expanded-item">
+        <strong>{key.replace(/_/g, " ")}:</strong> {String(value ?? "-")}
+      </div>
+    ))}
+  </div>
+);
 
 function AdminContainer() {
   const location = useLocation();
@@ -443,6 +461,7 @@ function AdminContainer() {
     try {
       setLoading(true);
       const orders = await allOrders();
+      console.log("admin",orders)
       setData(orders);
       setFilterData(orders);
       setShowDashboard(false);

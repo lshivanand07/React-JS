@@ -107,6 +107,33 @@
   display: flex;
 }
 
+.expanded-box {
+  padding: 15px;
+  margin: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.expanded-item {
+  margin: 6px 0;
+  word-break: break-word;
+}
+
+.expanded-item strong {
+  text-transform: capitalize;
+  margin-right: 8px;
+}
+
+.new-badge {
+  background: red;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 10px;
+  margin-left: 6px;
+}
+
 @media screen and (max-width: 768px) {
   .admin-pannel {
     flex-direction: column;

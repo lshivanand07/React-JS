@@ -36,7 +36,6 @@ function OneProductDetails({
   PopupModel,
 }: Readonly<ProductDetails>) {
   const item = productItems;
-  console.log('item', item.image)
 
   const [selectedVariantItem, setSelectedVariantItem] = useState({
     color: '',
@@ -53,7 +52,7 @@ function OneProductDetails({
       (size: any) => size.size === selectedVariantItem.size
     ) || [];
 
-  console.log(filteredSize);
+  console.log("filteredSize", filteredSize);
 
   return (
     <>
@@ -138,7 +137,7 @@ function OneProductDetails({
                       text="confirm"
                       onClick={() =>
                         handleAddCart(
-                          filteredSize[0].product_id,
+                          item.product_id,
                           filteredSize[0].variant_id
                         )
                       }
