@@ -407,7 +407,7 @@ function AdminContainer() {
     try {
       setLoading(true);
       const users = await fetchAllUser();
-      console.log(users)
+      console.log('users', users)
 
       if (!role) {
         setData(users[0]);
