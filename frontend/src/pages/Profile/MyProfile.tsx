@@ -255,7 +255,6 @@ function MyProfileContainer() {
 
   const userData = useSelector((state: any) => state.user.userData);
   const [editedProfileData, setEditedProfileData] = useState<any>({});
-
   useEffect(() => {
     if (userData?.User_id) {
       setEditedProfileData({

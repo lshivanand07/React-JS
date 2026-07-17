@@ -21,10 +21,12 @@ function AppRoutes() {
       <Route path="/products" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignupContainer />} />
-      <Route path="/profile" element={<MyProfileContainer />} />
-      <Route path="/address" element={<MyProfileContainer />} />
-      <Route path="/add-user-address" element={<AddressContainer />} />
       <Route path="/seller-account" element={<SellerContainer />} />
+      <Route element={<ProtectedRoutes allowedRoles={['customer', 'seller', 'admin']} />}>
+        <Route path="/profile" element={<MyProfileContainer />} />
+        <Route path="/address" element={<MyProfileContainer />} />
+        <Route path="/add-user-address" element={<AddressContainer />} />
+      </Route>
       <Route element={<ProtectedRoutes allowedRoles={['customer']} />}>
         <Route path="/products/:id" element={<ProductContainer />} />
         <Route path="/cart" element={<CartContainer />} />

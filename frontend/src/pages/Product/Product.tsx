@@ -65,7 +65,7 @@ function OneProductDetails({
         <div className="product-veriants">
           <div className="product_img">
             {''}
-            <img src={item?.image} alt="product" />{' '}
+            <img src={item?.image_url} alt="product" />{' '}
           </div>
 
           <div>

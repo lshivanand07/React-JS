@@ -22,6 +22,8 @@ export async function createUserAddress(address: Address) {
 }
 
 export async function editAddress(address: Address, addressStatus: string) {
+console.log(addressStatus, address)
+
   const response = await api.put(
     `/edit-user-address/${addressStatus}`,
     address

@@ -156,7 +156,7 @@ const CartDataContainer = () => {
     try {
       setLoading(true);
       const data = await fetchCartDetails();
-      console.log(data);
+      console.log('cart data', data);
       dispatch(setCart(data));
       setMessage(data.message);
     } catch (error) {
