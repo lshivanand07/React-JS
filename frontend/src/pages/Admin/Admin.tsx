@@ -411,6 +411,7 @@ function AdminContainer() {
     try {
       setLoading(true);
       const users = await fetchAllUser();
+      console.log(users)
 
       if (!role) {
         setData(users[0]);
@@ -432,7 +433,7 @@ function AdminContainer() {
     } finally {
       setLoading(false);
     }
-  }, [navigate, userColumnsMapped]);
+  }, [userColumnsMapped]);
 
   const getProducts = useCallback(async () => {
     try {
@@ -441,14 +442,13 @@ function AdminContainer() {
       setData(products);
       setFilterData(products);
       setColumns(productColumnsMapped);
-      navigate('/admin/products');
       setShowDashboard(false);
     } catch (error) {
       setServerError(error);
     } finally {
       setLoading(false);
     }
-  }, [navigate, productColumnsMapped]);
+  }, [productColumnsMapped]);
 
   const getDashboardRecord = useCallback(async () => {
     try {
@@ -475,13 +475,12 @@ function AdminContainer() {
       setFilterData(orders);
       setShowDashboard(false);
       setColumns(orderColumnsMapped);
-      navigate('/admin/orders');
     } catch (error) {
       setServerError(error);
     } finally {
       setLoading(false);
     }
-  }, [navigate, orderColumnsMapped]);
+  }, [orderColumnsMapped]);
 
   console.log("Users component rendered");
   useEffect(() => {
