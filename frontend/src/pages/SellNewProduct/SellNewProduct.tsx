@@ -9,6 +9,7 @@ import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 
 interface SellProductProps {
   message: string;
+  setMessage: (value:string)=> void
   productData: any;
   setProductData: (value: any) => void;
   newProductData: ({ value }: any) => void;
@@ -18,6 +19,7 @@ interface SellProductProps {
 
 const SellProduct = ({
   message,
+  setMessage,
   productData,
   setProductData,
   newProductData,
@@ -241,7 +243,7 @@ const SellProduct = ({
                   <h4>{message}</h4>
                   <Button
                     text="Ok"
-                    onClick={() => setShowPopup(false)}
+                    onClick={() => {setShowPopup(false); setMessage('');}}
                   ></Button>
                 </>
               )}
@@ -299,9 +301,16 @@ function SellProductContainer() {
     try {
       setLoading(true);
       console.log('productData', productData);
+      if(!productData.discount?.start_date || !productData.discount?.end_date){
+        console.log('jj')
+        setMessage('Please enter valid discount dates')
+        return;
+      }
+       console.log('out')
       const data = await createProduct(productData);
       setMessage(data.message);
       setShowPopup(true);
+  
     } catch (error) {
       setServerError(error);
     } finally {
@@ -314,6 +323,7 @@ function SellProductContainer() {
       loading={loading}
       serverError={serverError}
       message={message}
+      setMessage = {setMessage}
       setProductData={setProductData}
       productData={productData}
       newProductData={newProductData}

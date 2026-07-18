@@ -169,7 +169,7 @@ function MyProfile({
               </>
             )}
 
-            {activeTab === 'address' && addressData[0] && (
+            {activeTab === 'address' && addressData?.length > 0 && (
               <>
                 <h1 className="dashboard-info-heading">My Address</h1>
                 <div className="user-addresses"></div>
@@ -200,7 +200,7 @@ function MyProfile({
               </>
             )}
 
-            {activeTab === 'address' && !addressData[0] && (
+            {activeTab === 'address' && (!addressData || addressData.length === 0) && (
               <div className="no-addresses-found">
                 <img src={notAddressFound} alt="person Img" />
                 <h3>No Addresses found in your account!</h3>
@@ -252,6 +252,12 @@ function MyProfileContainer() {
 
   const dispatch = useDispatch();
   const addressData = useSelector((state: any) => state.address.addressItem);
+  console.log('addressData ',addressData)
+  if(addressData?.length > 0){
+    console.log('true')
+  }else{
+     console.log('false')
+  }
 
   const userData = useSelector((state: any) => state.user.userData);
   const [editedProfileData, setEditedProfileData] = useState<any>({});
@@ -313,7 +319,7 @@ function MyProfileContainer() {
         setActiveTab('address');
       }
     } catch (error) {
-      setServerError(error);
+      
     } finally {
       setLoading(false);
     }
@@ -322,9 +328,9 @@ function MyProfileContainer() {
   useEffect(() => {
     if (location.pathname === '/profile') {
       fetchUserInfo();
-    } else {
-      fetchAddressInfo();
-    }
+    } else if (location.pathname === "/address") {
+    fetchAddressInfo();
+  }
   }, []);
 
   function EditUserAddress(addressStatus: string) {
