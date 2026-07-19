@@ -12,6 +12,7 @@ import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs';
 import { fetchProductDetails, deleteProduct } from '../../services/ProductApi';
 import { fetchFlipkartRecords } from '../../services/dashboardApi';
 import { allOrders, editOrderStatus } from '../../services/ordersApi';
+import Loader from '../../components/Loader/Loader';
 
 const customStyles = {
   headRow: {
@@ -37,6 +38,7 @@ interface AdminProps {
   message: string;
   setShowPopup: (value: boolean) => void;
   showPopup: boolean;
+  loading: boolean
 }
 
 function AdminPage({
@@ -50,6 +52,7 @@ function AdminPage({
   message,
   setShowPopup,
   showPopup,
+  loading
 }: Readonly<AdminProps>) {
   const navigate = useNavigate();
 
@@ -65,7 +68,8 @@ function AdminPage({
           </div>
         </div>
       </header>
-      <div className="container">
+      {loading ? <Loader /> : 
+       <div className="container">
         <div className="admin-pannel">
           <div className="sidebar">
             <div className="buttons-div">
@@ -178,11 +182,12 @@ function AdminPage({
           )}
         </div>
       </div>
+      }
     </>
   );
 }
 
-const EnhancedAdmin = withLoader(withErrorHandling(AdminPage));
+const EnhancedAdmin = withErrorHandling(AdminPage);
 
 const getUserColumns = (deleteOneUser: (id: number) => void) => [
   { name: 'ID', cell: (row: any) => (

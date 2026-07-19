@@ -11,18 +11,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setProduct } from '../../redux/slices/productSlice';
 import MobileMenu from '../../components/MobileMenu/MobileMenu';
 import Button from '../../components/Buttons/Button';
+import Loader from '../../components/Loader/Loader';
 
 interface HomeProps {
   products: any[];
   navigate: any;
   message: string;
+  loading : boolean;
 }
 
-function Home({ products, navigate, message }: Readonly<HomeProps>) {
+function Home({ products, navigate, message, loading }: Readonly<HomeProps>) {
   return (
     <div className="home-page">
       <Navbar />
-      <div className="container">
+      {loading ?  <Loader /> : 
+       <div className="container">
         <div className="products">
           {Array.isArray(products) &&
             products?.map((product) => (
@@ -54,13 +57,14 @@ function Home({ products, navigate, message }: Readonly<HomeProps>) {
           )}
         </div>
       </div>
+      }
       <MobileMenu />
       <Footer />
     </div>
   );
 }
 
-const EnhancedHome = withLoader(withErrorHandling(Home));
+const EnhancedHome = withErrorHandling(Home);
 
 function HomeContainer() {
   const navigate = useNavigate();

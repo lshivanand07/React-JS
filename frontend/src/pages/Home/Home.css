@@ -1,9 +1,9 @@
 .products {
   display: flex;
   flex-wrap: wrap;
+  min-height: 400px;
   gap: 5px;
   margin: 10px auto;
-  min-height: 400px;
   justify-content: center;
 }
 
