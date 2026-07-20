@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import withErrorHandling from '../../hoc/withErrorHandling';
-import withLoader from '../../hoc/withLoader';
 import logo from '../../assets/logo.png';
 import Button from '../../components/Buttons/Button';
 import './Admin.css';
