@@ -6,12 +6,20 @@ import { fetchProductDetails } from '../../services/ProductApi';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useMemo } from 'react';
 import withErrorHandling from '../../hoc/withErrorHandling';
-import withLoader from '../../hoc/withLoader';
 import { useDispatch, useSelector } from 'react-redux';
 import { setProduct } from '../../redux/slices/productSlice';
 import MobileMenu from '../../components/MobileMenu/MobileMenu';
 import Button from '../../components/Buttons/Button';
 import Loader from '../../components/Loader/Loader';
+import Carousel from '../../components/Carousel/Carousel';
+
+const bannerImages = [
+  'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1200&h=400&fit=crop', // shopping bags
+  'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&h=400&fit=crop', // fashion sale
+  'https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200&h=400&fit=crop', // electronics
+  'https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=1200&h=400&fit=crop', // gadgets
+  'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=1200&h=400&fit=crop',     // shoes/fashion
+];
 
 interface HomeProps {
   products: any[];
@@ -24,9 +32,24 @@ function Home({ products, navigate, message, loading }: Readonly<HomeProps>) {
   return (
     <div className="home-page">
       <Navbar />
+     <div className="hero-section">
+  <div className="orb orb-1"></div>
+  <div className="orb orb-2"></div>
+  <div className="hero-content">
+    <h1>Summer Sale 🔥</h1>
+    <p>Up to 70% OFF on Electronics & Fashion</p>
+   <Button
+  text="Shop Now"
+  onClick={() => {
+    document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' });
+  }}
+/>
+  </div>
+</div>
+<Carousel images={bannerImages} interval={3000} />
       {loading ?  <Loader /> : 
        <div className="container">
-        <div className="products">
+        <div className="products" id='products-section'>
           {Array.isArray(products) &&
             products?.map((product) => (
               <button

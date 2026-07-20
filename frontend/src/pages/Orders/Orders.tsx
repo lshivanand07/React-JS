@@ -219,6 +219,13 @@ function OrdersContainer() {
       setLoading(true);
       if (!addressData[0]) {
         navigate('/address');
+      }if(!checkoutData.payment_method_name){
+        setMessage('Please Select Payment Method')
+        return;
+      }
+      if(!checkoutData.address_status){
+        setMessage('Please Select order address')
+        return
       }
       const data = await checkoutOrder(checkoutData);
       setMessage(data.message);
