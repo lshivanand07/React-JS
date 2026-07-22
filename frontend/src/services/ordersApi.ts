@@ -26,7 +26,7 @@ export async function editOrderStatus(payload: Payload) {
   );
   console.log(payload);
   const response = await api.put(
-    `/edit-user/${payload.user_id}/order/${payload.order_id}/${payload.order_item}`,
+    `/edit-user/${payload.user_id}/order/${payload.order_id}`,
     {
       order_status: payload.order_status,
     }
