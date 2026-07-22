@@ -1,58 +1,427 @@
-.product-veriants {
-  padding: 20px;
-  text-align: center;
-  margin: auto;
-  box-shadow: 0px 0px 10px black;
-  border-radius: 10px;
+/* ============================================================
+   Product Detail Page — Design Tokens
+   Same palette family as Admin.css so both surfaces feel like
+   one product. Redeclared here in case this file loads alone.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --fk-blue: #2874f0;
+  --fk-blue-dark: #1a56c4;
+  --fk-yellow: #ffe500;
+  --fk-navy: #0b1739;
+  --fk-ink: #172337;
+  --fk-slate: #64748b;
+  --fk-surface: #f5f7fb;
+  --fk-card: #ffffff;
+  --fk-border: #e6e9f2;
+  --fk-success: #12b76a;
+  --fk-danger: #f04438;
+
+  --shadow-sm: 0 1px 2px rgba(11, 23, 57, 0.06);
+  --shadow-md: 0 8px 24px rgba(11, 23, 57, 0.08);
+  --shadow-lg: 0 24px 48px rgba(11, 23, 57, 0.16);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 .product-heading {
   text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--fk-ink);
+  margin: 24px 0 8px;
+  opacity: 0;
+  animation: fadeInUp 0.5s var(--ease-out) forwards;
 }
 
+/* ============================================================
+   Main Card
+   ============================================================ */
+
+.product-veriants {
+  padding: 32px;
+  margin: 24px auto;
+  max-width: 900px;
+  background: var(--fk-card);
+  box-shadow: var(--shadow-lg);
+  border-radius: var(--radius-lg);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+  position: relative;
+  opacity: 0;
+  animation: fadeInUp 0.55s var(--ease-out) 0.1s forwards;
+}
+
+/* ============================================================
+   Product Image
+   ============================================================ */
+
 .product_img {
-  max-width: 180px;
+  max-width: 100%;
   height: auto;
   margin: auto;
+  background: var(--fk-surface);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  overflow: hidden;
 }
 
 .product_img img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.product_img:hover img {
+  transform: scale(1.06);
+}
+
+/* ============================================================
+   Info Column
+   ============================================================ */
+
+.product-veriants > div:nth-child(2) {
+  text-align: left;
+}
+
+.product-veriants h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--fk-ink);
+  margin: 0 0 8px;
+}
+
+.product-veriants > div:nth-child(2) > p {
+  color: var(--fk-slate);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.variants {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
 .variants select {
   width: 200px;
   margin-bottom: 10px;
-  margin-left: 10px;
+  margin-left: 0;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--fk-border);
+  background: var(--fk-card);
+  color: var(--fk-ink);
+  font-size: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.variants select:focus {
+  outline: none;
+  border-color: var(--fk-blue);
+  box-shadow: 0 0 0 4px rgba(40, 116, 240, 0.14);
+}
+
+.variants > div {
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  padding: 14px 18px;
+  background: var(--fk-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--fk-border);
+  animation: fadeInUp 0.3s var(--ease-out);
+}
+
+.variants > div p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--fk-ink);
+}
+
+.variants > div p:first-child {
+  color: var(--fk-blue-dark);
+}
+
+/* ============================================================
+   Add to cart button (rendered by <Button>)
+   ============================================================ */
+
+.product-veriants button {
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.product-veriants > button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
+   Add-to-cart Overlay + Form
+   ============================================================ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 23, 57, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.2s var(--ease-out);
 }
 
 .add-items-in-cart-form {
-  max-width: 200px;
+  max-width: 280px;
+  width: 100%;
   margin: 20px auto;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 0px 0px 10px white;
+  padding: 28px 24px;
+  border-radius: var(--radius-lg);
+  background-color: var(--fk-card);
+  box-shadow: var(--shadow-lg);
+  animation: popIn 0.3s var(--ease-out);
+}
+
+.add-items-in-cart-form label {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--fk-ink);
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+/* ============================================================
+   Quantity Stepper (+ / -)
+   ============================================================ */
+
+.qty-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 0 auto 6px;
+  width: fit-content;
+  border: 1px solid var(--fk-border);
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--fk-surface);
+}
+
+.qty-btn {
+  all: unset;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--fk-blue-dark);
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease-out), transform 0.12s var(--ease-out);
+}
+
+.qty-btn:hover:not(:disabled) {
+  background-color: rgba(40, 116, 240, 0.12);
+}
+
+.qty-btn:active:not(:disabled) {
+  transform: scale(0.88);
+}
+
+.qty-btn:disabled {
+  color: var(--fk-border);
+  cursor: not-allowed;
+}
+
+.qty-value {
+  min-width: 48px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fk-ink);
+  font-variant-numeric: tabular-nums;
+  transition: transform 0.15s var(--ease-out);
+}
+
+.qty-value.bump {
+  animation: bump 0.2s var(--ease-out);
+}
+
+.qty-hint {
+  text-align: center;
+  font-size: 12px;
+  color: var(--fk-slate);
+  margin-top: 8px;
 }
 
 .confirm-Cancel-btn {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 10px;
+  padding: 10px 0 0;
 }
+
+.confirm-Cancel-btn button {
+  flex: 1;
+}
+
+.error {
+  color: var(--fk-danger);
+  font-size: 13px;
+  text-align: center;
+  margin-top: 10px;
+  min-height: 16px;
+}
+
+/* ============================================================
+   Confirmation Modal
+   ============================================================ */
+
+.model-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 23, 57, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.2s var(--ease-out);
+}
+
+.modal-container {
+  background: var(--fk-card);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  min-width: 280px;
+  animation: popIn 0.3s var(--ease-out);
+}
+
+.modal-container h4 {
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 20px;
+  color: var(--fk-ink);
+}
+
+/* ============================================================
+   Loader — scoped to the product card only (Navbar/Footer stay put)
+   Drop this markup where the product card would render:
+     <div className="product-veriants product-veriants--loading">
+       <div className="dual-ring"></div>
+     </div>
+   ============================================================ */
+
+.product-veriants--loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+}
+
+.dual-ring {
+  width: 56px;
+  height: 56px;
+  position: relative;
+}
+
+.dual-ring::before,
+.dual-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 5px solid transparent;
+}
+
+.dual-ring::before {
+  border-top-color: var(--fk-blue);
+  border-bottom-color: var(--fk-blue);
+  animation: spin 0.9s linear infinite;
+}
+
+.dual-ring::after {
+  inset: 9px;
+  border-left-color: var(--fk-yellow);
+  border-right-color: var(--fk-yellow);
+  animation: spin 0.7s linear infinite reverse;
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.22); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
 
 @media screen and (max-width: 768px) {
   .product-veriants {
+    grid-template-columns: 1fr;
     width: 95%;
-    padding: 15px;
+    padding: 20px;
     box-sizing: border-box;
+    text-align: center;
+  }
+
+  .product-veriants > div:nth-child(2) {
+    text-align: center;
   }
 
   .product_img {
-    max-width: 150px;
+    max-width: 190px;
   }
 
   .variants {
@@ -65,6 +434,12 @@
     width: 100%;
     max-width: 250px;
     margin: 5px 0;
+  }
+
+  .variants > div {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
   }
 
   .add-items-in-cart-form {

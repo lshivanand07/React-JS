@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { fetchCartDetails, deleteCartItem } from '../../services/cartApi';
 import './Cart.css';
 import Button from '../../components/Buttons/Button';
-import withLoader from '../../hoc/withLoader';
 import withErrorHandling from '../../hoc/withErrorHandling';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar';
@@ -21,7 +20,7 @@ interface CartListProps {
   showPopup: boolean;
   setShowPopup: (value: boolean) => void;
   setSelectedItem: ({ productId, variantId }: any) => void;
-
+  loading: boolean;
 }
 
 const CartDataList = ({
@@ -33,6 +32,7 @@ const CartDataList = ({
   showPopup,
   setShowPopup,
   setSelectedItem,
+  loading,
 }: CartListProps) => {
   const totalPrice = useMemo(() => {
     return (
@@ -51,57 +51,69 @@ const CartDataList = ({
       <Navbar />
       <div className="container">
         <Breadcrumbs />
-        {!message && (
-          <>
-            <h1 className="cart-heading">My Cart</h1>
-            <div className="carts">
-              {cartItems[0]?.map((item: any) => (
-                <div
-                  className="cart"
-                  key={`${item.product_id}-${item.variant_id}`}
-                >
-                  <div className="product_img">
-                    <img src={item.image_url} alt="product" />
-                  </div>
-                  <h2>{item.product_name}</h2>
-                  <p>Price: ₹{item.price}</p>
-                  <p>Quantity: {item.quantity}</p>
-                  <p>Color: {item.color}</p>
-                  <p>Size: {item.size}</p>
-                  <p className="uppercase">description: {item.description}</p>
-                  <p>
-                    Discount percentage:{' '}
-                    {item.discount_percentage ? item.discount_percentage : 0}%
-                  </p>
-                  <div className="Edit-Delete-btn">
-                    <Button
-                      text="Delete"
-                      onClick={() => {
-                        setShowPopup(true);
-                        setSelectedItem({
-                          productID: item.product_id,
-                          variantID: item.variant_id,
-                        });
-                      }}
-                    ></Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="palce-order-btn">
-              <h2 className="cart-totalPrice">₹ {totalPrice}</h2>
-              <Button
-                text="PLACE ORDER"
-                onClick={() => placeOrders(totalPrice)}
-              ></Button>
-            </div>
-          </>
-        )}
 
-        {message && (
-          <div className="empty-cart-div">
-            <h3>{message}</h3>
+        {loading ? (
+          <div className="carts-loading">
+            <div className="dual-ring"></div>
           </div>
+        ) : (
+          <>
+            {!message && (
+              <>
+                <h1 className="cart-heading">My Cart</h1>
+                <div className="carts">
+                  {cartItems[0]?.map((item: any) => (
+                    <div
+                      className="cart"
+                      key={`${item.product_id}-${item.variant_id}`}
+                    >
+                      <div className="product_img">
+                        <img src={item.image_url} alt="product" />
+                      </div>
+                      <h2>{item.product_name}</h2>
+                      <p>Price: ₹{item.price}</p>
+                      <p>Quantity: {item.quantity}</p>
+                      <p>Color: {item.color}</p>
+                      <p>Size: {item.size}</p>
+                      <p className="uppercase">
+                        description: {item.description}
+                      </p>
+                      <p>
+                        Discount percentage:{' '}
+                        {item.discount_percentage ? item.discount_percentage : 0}
+                        %
+                      </p>
+                      <div className="Edit-Delete-btn">
+                        <Button
+                          text="Delete"
+                          onClick={() => {
+                            setShowPopup(true);
+                            setSelectedItem({
+                              productID: item.product_id,
+                              variantID: item.variant_id,
+                            });
+                          }}
+                        ></Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="palce-order-btn">
+                  <h2 className="cart-totalPrice">₹ {totalPrice}</h2>
+                  <Button
+                    text="PLACE ORDER"
+                    onClick={() => placeOrders(totalPrice)}
+                  ></Button>
+                </div>
+              </>
+            )}
+
+            {message && (
+              <div className="empty-cart-div">
+                <h3>{message}</h3>
+              </div>
+            )}
+          </>
         )}
 
         {showPopup && (
@@ -132,7 +144,7 @@ const CartDataList = ({
   );
 };
 
-const EnhancedCartList = withLoader(withErrorHandling(CartDataList));
+const EnhancedCartList = withErrorHandling(CartDataList);
 
 const CartDataContainer = () => {
   const navigate = useNavigate();
@@ -146,8 +158,6 @@ const CartDataContainer = () => {
     variantID: number;
   }
 
-  console.log('m', message);
-
   const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
 
   const dispatch = useDispatch();
@@ -156,7 +166,6 @@ const CartDataContainer = () => {
     try {
       setLoading(true);
       const data = await fetchCartDetails();
-      console.log('cart data', data);
       dispatch(setCart(data));
       setMessage(data.message);
     } catch (error) {
@@ -169,6 +178,7 @@ const CartDataContainer = () => {
   useEffect(() => {
     fetchCartItems();
   }, []);
+
   const deleteCartItems = useCallback(async () => {
     try {
       setLoading(true);
@@ -176,7 +186,6 @@ const CartDataContainer = () => {
         return;
       }
       const data = await deleteCartItem(selectedItem);
-      console.log('delete');
       setShowPopup(true);
       setMessage(data.message);
     } catch (error) {

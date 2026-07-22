@@ -6,7 +6,6 @@ import { fetchProductById } from '../../services/ProductApi';
 import Button from '../../components/Buttons/Button';
 import { addCartItems } from '../../services/cartApi';
 import withErrorHandling from '../../hoc/withErrorHandling';
-import withLoader from '../../hoc/withLoader';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setProduct } from '../../redux/slices/productSlice';
@@ -23,6 +22,7 @@ interface ProductDetails {
   handleAddCart: (product_id: number, variant_id: number) => void;
   showPopup: boolean;
   PopupModel: () => void;
+  loading: boolean;
 }
 
 function OneProductDetails({
@@ -34,6 +34,7 @@ function OneProductDetails({
   handleAddCart,
   showPopup,
   PopupModel,
+  loading,
 }: Readonly<ProductDetails>) {
   const item = productItems;
 
@@ -41,6 +42,9 @@ function OneProductDetails({
     color: '',
     size: '',
   });
+
+  const [quantity, setQuantity] = useState(1);
+  const [bump, setBump] = useState(false);
 
   const filteredColor =
     productItems?.variants?.filter(
@@ -52,7 +56,34 @@ function OneProductDetails({
       (size: any) => size.size === selectedVariantItem.size
     ) || [];
 
-  console.log("filteredSize", filteredSize);
+  const maxStock = filteredSize[0]?.stock ?? undefined;
+
+  // Reset quantity to 1 each time the "add to cart" form opens
+  useEffect(() => {
+    if (stockForm) {
+      setQuantity(1);
+    }
+  }, [stockForm]);
+
+  // Keep the parent's stock value in sync with the stepper
+  useEffect(() => {
+    setStock(quantity);
+  }, [quantity, setStock]);
+
+  const triggerBump = () => {
+    setBump(true);
+    setTimeout(() => setBump(false), 200);
+  };
+
+  const decreaseQty = () => {
+    setQuantity((q) => Math.max(1, q - 1));
+    triggerBump();
+  };
+
+  const increaseQty = () => {
+    setQuantity((q) => (maxStock ? Math.min(maxStock, q + 1) : q + 1));
+    triggerBump();
+  };
 
   return (
     <>
@@ -61,117 +92,146 @@ function OneProductDetails({
         <Breadcrumbs />
         <h1 className="product-heading">Product Details</h1>
 
-        <div className="product-veriants">
-          <div className="product_img">
-            {''}
-            <img src={item?.image_url} alt="product" />{' '}
+        {loading ? (
+          <div className="product-veriants product-veriants--loading">
+            <div className="dual-ring"></div>
           </div>
-
-          <div>
-            <h3>{item?.product_name}</h3>
-            <p>{item?.description}</p>
-            <div className="variants">
-              <select
-                value={selectedVariantItem.color}
-                onChange={(event) =>
-                  setSelectedVariantItem({
-                    color: event.target.value,
-                    size: '',
-                  })
-                }
-              >
-                <option value="" disabled>
-                  -- Color --
-                </option>
-                {productItems?.variants?.map((item: any) => (
-                  <option key={item?.product_id}>{item.color}</option>
-                ))}
-              </select>
-
-              <select
-                value={selectedVariantItem.size}
-                onChange={(event) =>
-                  setSelectedVariantItem({
-                    ...selectedVariantItem,
-                    size: event.target.value,
-                  })
-                }
-              >
-                <option value="" disabled>
-                  -- Size --
-                </option>
-                {filteredColor?.map((item: any) => (
-                  <option key={item?.product_id}>{item.size}</option>
-                ))}
-              </select>
-
-              {filteredSize.length > 0 && (
-                <div>
-                  <p>Price: ₹{filteredSize[0].price}</p>
-                  <p>Stock: {filteredSize[0].stock}</p>
-                </div>
-              )}
+        ) : (
+          <div className="product-veriants">
+            <div className="product_img">
+              {''}
+              <img src={item?.image_url} alt="product" />{' '}
             </div>
-          </div>
 
-          <Button
-            text="Add to cart"
-            onClick={() => setStockForm(true)}
-          ></Button>
+            <div>
+              <h3>{item?.product_name}</h3>
+              <p>{item?.description}</p>
+              <div className="variants">
+                <select
+                  value={selectedVariantItem.color}
+                  onChange={(event) =>
+                    setSelectedVariantItem({
+                      color: event.target.value,
+                      size: '',
+                    })
+                  }
+                >
+                  <option value="" disabled>
+                    -- Color --
+                  </option>
+                  {productItems?.variants?.map((item: any) => (
+                    <option key={item?.product_id}>{item.color}</option>
+                  ))}
+                </select>
 
-          {stockForm && (
-            <div className="overlay">
-              <div className="add-items-in-cart-form">
-                <form>
-                  <label htmlFor="stock">Stock</label>
+                <select
+                  value={selectedVariantItem.size}
+                  onChange={(event) =>
+                    setSelectedVariantItem({
+                      ...selectedVariantItem,
+                      size: event.target.value,
+                    })
+                  }
+                >
+                  <option value="" disabled>
+                    -- Size --
+                  </option>
+                  {filteredColor?.map((item: any) => (
+                    <option key={item?.product_id}>{item.size}</option>
+                  ))}
+                </select>
 
-                  <input
-                    id="stock"
-                    type="number"
-                    min={1}
-                    onChange={(e) => setStock(Number(e.target.value))}
-                  />
-
-                  <div className="confirm-Cancel-btn">
-                    <Button
-                      text="confirm"
-                      onClick={() =>
-                        handleAddCart(
-                          item.product_id,
-                          filteredSize[0].variant_id
-                        )
-                      }
-                    />
-                    <Button text="cancel" onClick={() => setStockForm(false)} />
+                {filteredSize.length > 0 && (
+                  <div>
+                    <p>Price: ₹{filteredSize[0].price}</p>
+                    <p>Stock: {filteredSize[0].stock}</p>
                   </div>
-                  <p className="error">{message}</p>
-                </form>
+                )}
               </div>
             </div>
-          )}
 
-          {showPopup && (
-            <div className="model-overlay">
-              <div className="modal-container">
-                <h4>{message}</h4>
-                <Button text="Ok" onClick={PopupModel}></Button>
+            <Button
+              text="Add to cart"
+              onClick={() => setStockForm(true)}
+            ></Button>
+
+            {stockForm && (
+              <div className="overlay">
+                <div className="add-items-in-cart-form">
+                  <form>
+                    <label htmlFor="qty-value">Quantity</label>
+
+                    <div className="qty-stepper">
+                      <button
+                        type="button"
+                        className="qty-btn"
+                        onClick={decreaseQty}
+                        disabled={quantity <= 1}
+                        aria-label="Decrease quantity"
+                      >
+                        −
+                      </button>
+                      <span
+                        id="qty-value"
+                        className={`qty-value${bump ? ' bump' : ''}`}
+                      >
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        className="qty-btn"
+                        onClick={increaseQty}
+                        disabled={maxStock !== undefined && quantity >= maxStock}
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {maxStock !== undefined && (
+                      <p className="qty-hint">{maxStock} in stock</p>
+                    )}
+
+                    <div className="confirm-Cancel-btn">
+                      <Button
+                        text="confirm"
+                        onClick={() =>
+                          handleAddCart(
+                            item.product_id,
+                            filteredSize[0].variant_id
+                          )
+                        }
+                      />
+                      <Button text="cancel" onClick={() => setStockForm(false)} />
+                    </div>
+                    <p className="error">{message}</p>
+                  </form>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+
+            {showPopup && (
+              <div className="model-overlay">
+                <div className="modal-container">
+                  <h4>{message}</h4>
+                  <Button text="Ok" onClick={PopupModel}></Button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
       <Footer />
     </>
   );
 }
 
-const EnhancedProducts = withLoader(withErrorHandling(OneProductDetails));
+const EnhancedProducts = withErrorHandling(OneProductDetails);
 
 const ProductContainer = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const productId = Number(id);
-  console.log('productId ', productId);
   const [loading, setLoading] = useState(false);
   const [serverError, setServerError] = useState<Error | null>(null);
   const [message, setMessage] = useState('');
@@ -182,13 +242,10 @@ const ProductContainer = () => {
   const dispatch = useDispatch();
   const productItems = useSelector((state: any) => state.product.productItem);
 
-  console.log('hi',productItems);
-
   const productData = async () => {
     try {
       setLoading(true);
       const data = await fetchProductById(productId);
-      console.log('Single ', data);
       dispatch(setProduct(data));
     } catch (error) {
       setServerError(error as Error);
@@ -216,7 +273,6 @@ const ProductContainer = () => {
         variant_id: variant_id,
         quantity: stock,
       };
-      console.log('payload', payload);
       const data = await addCartItems(payload);
       setMessage(data.message);
       setShowPopup(true);

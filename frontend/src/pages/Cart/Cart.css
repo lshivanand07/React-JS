@@ -1,57 +1,255 @@
+/* ============================================================
+   Cart Page — Design Tokens
+   Same palette family as Admin.css / product.css.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --fk-blue: #2874f0;
+  --fk-blue-dark: #1a56c4;
+  --fk-yellow: #ffe500;
+  --fk-navy: #0b1739;
+  --fk-ink: #172337;
+  --fk-slate: #64748b;
+  --fk-surface: #f5f7fb;
+  --fk-card: #ffffff;
+  --fk-border: #e6e9f2;
+  --fk-success: #12b76a;
+  --fk-danger: #f04438;
+  --fk-danger-dark: #c9362a;
+
+  --shadow-sm: 0 1px 2px rgba(11, 23, 57, 0.06);
+  --shadow-md: 0 8px 24px rgba(11, 23, 57, 0.08);
+  --shadow-lg: 0 24px 48px rgba(11, 23, 57, 0.16);
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 .cart-heading {
   text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--fk-ink);
+  margin: 24px 0 16px;
+  opacity: 0;
+  animation: fadeInUp 0.5s var(--ease-out) forwards;
 }
+
+/* ============================================================
+   Cart Grid
+   ============================================================ */
 
 .carts {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 0px 20px;
+  padding: 0px 20px 100px;
   min-height: 400px;
 }
 
 .cart {
-  border: 2px solid black;
-  padding: 20px;
-  border-radius: 20px;
-  width: 300px;
+  border: 1px solid var(--fk-border);
+  padding: 0;
+  border-radius: var(--radius-lg);
+  width: 280px;
+  background: var(--fk-card);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeInUp 0.45s var(--ease-out) forwards;
+  transition: transform 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.cart:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Stagger the entrance of each card */
+.cart:nth-child(1) { animation-delay: 0.02s; }
+.cart:nth-child(2) { animation-delay: 0.08s; }
+.cart:nth-child(3) { animation-delay: 0.14s; }
+.cart:nth-child(4) { animation-delay: 0.2s; }
+.cart:nth-child(5) { animation-delay: 0.26s; }
+.cart:nth-child(6) { animation-delay: 0.32s; }
+.cart:nth-child(n + 7) { animation-delay: 0.36s; }
+
+.cart .product_img {
+  width: 100%;
+  height: 170px;
+  background: var(--fk-surface);
+  overflow: hidden;
+}
+
+.cart .product_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 14px;
+  box-sizing: border-box;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.cart:hover .product_img img {
+  transform: scale(1.08);
+}
+
+.cart h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--fk-ink);
+  margin: 14px 16px 6px;
 }
 
 .cart p {
-  font-size: 18px;
+  font-size: 14px;
+  color: var(--fk-slate);
+  margin: 3px 16px;
+  line-height: 1.5;
+}
+
+.cart p.uppercase {
+  text-transform: none;
+}
+
+.cart p:nth-of-type(1) {
+  font-weight: 700;
+  color: var(--fk-ink);
+  font-size: 16px;
 }
 
 .Edit-Delete-btn {
   display: flex;
   flex-wrap: wrap;
-  padding: 10px;
-  background-color: rgb(225, 224, 224);
-  gap: 20px;
+  padding: 12px 16px;
+  margin-top: auto;
+  background-color: var(--fk-surface);
+  border-top: 1px solid var(--fk-border);
+  gap: 12px;
 }
+
+.Edit-Delete-btn button {
+  transition: transform 0.15s var(--ease-out), box-shadow 0.15s var(--ease-out);
+}
+
+.Edit-Delete-btn button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ============================================================
+   Sticky Checkout Bar
+   ============================================================ */
+
 .palce-order-btn {
   width: 400px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px black;
+  padding: 18px 24px;
+  border-radius: 999px;
+  box-shadow: var(--shadow-lg);
   position: sticky;
-  bottom: 0px;
+  bottom: 20px;
   left: 0px;
-  background-color: white;
+  background: var(--fk-card);
+  border: 1px solid var(--fk-border);
   display: flex;
+  align-items: center;
   justify-content: flex-end;
   margin-left: auto;
+  margin-right: 20px;
   gap: 20px;
+  opacity: 0;
+  animation: fadeInUp 0.4s var(--ease-out) 0.1s forwards;
 }
 
 .palce-order-btn h2 {
   margin-top: 0px;
   margin-bottom: 0px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: var(--fk-blue-dark);
+  font-variant-numeric: tabular-nums;
+}
+
+.palce-order-btn button {
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
+}
+
+.palce-order-btn button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
+   Empty State
+   ============================================================ */
+
+.empty-cart-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  opacity: 0;
+  animation: fadeInUp 0.4s var(--ease-out) forwards;
 }
 
 .empty-cart-div h3 {
-  min-height: 400px;
   text-align: center;
-  font-size: 30px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--fk-slate);
+}
+
+/* ============================================================
+   Confirmation Modal
+   ============================================================ */
+
+.model-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 23, 57, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.2s var(--ease-out);
+}
+
+.modal-container {
+  background: var(--fk-card);
+  padding: 32px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  min-width: 300px;
+  max-width: 360px;
+  animation: popIn 0.3s var(--ease-out);
+}
+
+.modal-container h4 {
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 20px;
+  color: var(--fk-ink);
+  line-height: 1.5;
 }
 
 .userConformationBtn {
@@ -60,6 +258,84 @@
   align-items: center;
   gap: 20px;
 }
+
+.userConformationBtn button:first-child {
+  background-color: var(--fk-danger);
+}
+
+.userConformationBtn button:first-child:hover {
+  background-color: var(--fk-danger-dark);
+}
+
+/* ============================================================
+   Loader — scoped to the cart grid only (Navbar/Footer stay put)
+   Drop this markup where the cart grid would render:
+     <div className="carts-loading">
+       <div className="dual-ring"></div>
+     </div>
+   ============================================================ */
+
+.carts-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.dual-ring {
+  width: 56px;
+  height: 56px;
+  position: relative;
+}
+
+.dual-ring::before,
+.dual-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 5px solid transparent;
+}
+
+.dual-ring::before {
+  border-top-color: var(--fk-blue);
+  border-bottom-color: var(--fk-blue);
+  animation: spin 0.9s linear infinite;
+}
+
+.dual-ring::after {
+  inset: 9px;
+  border-left-color: var(--fk-yellow);
+  border-right-color: var(--fk-yellow);
+  animation: spin 0.7s linear infinite reverse;
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
 
 @media screen and (max-width: 768px) {
   .carts {
@@ -71,12 +347,12 @@
   .cart {
     width: 100%;
     max-width: 350px;
-    padding: 15px;
+    padding: 0;
     box-sizing: border-box;
   }
 
   .cart p {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .Edit-Delete-btn {
@@ -86,9 +362,11 @@
 
   .palce-order-btn {
     width: 100%;
-    padding: 15px;
-
+    padding: 15px 20px;
     box-sizing: border-box;
+    margin-right: 0;
+    bottom: 0;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   }
 
   .userConformationBtn {
@@ -100,4 +378,3 @@
     font-size: 22px;
   }
 }
-

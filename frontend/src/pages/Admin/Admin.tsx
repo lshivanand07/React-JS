@@ -37,7 +37,7 @@ interface AdminProps {
   message: string;
   setShowPopup: (value: boolean) => void;
   showPopup: boolean;
-  loading: boolean
+  loading: boolean;
 }
 
 function AdminPage({
@@ -51,7 +51,7 @@ function AdminPage({
   message,
   setShowPopup,
   showPopup,
-  loading
+  loading,
 }: Readonly<AdminProps>) {
   const navigate = useNavigate();
 
@@ -67,100 +67,114 @@ function AdminPage({
           </div>
         </div>
       </header>
-      {loading ? <Loader /> : 
-       <div className="container">
+
+      <div className="container">
         <div className="admin-pannel">
+          {/* Sidebar always stays mounted and interactive, even while a
+              section is loading — only the table-container swaps to
+              its own loader below. */}
           <div className="sidebar">
             <div className="buttons-div">
               <button onClick={getDashboardRecord}>Dashboard</button>
             </div>
             <div className="buttons-div">
-              <button onClick={() =>  navigate('/admin/users')}>Users</button>
+              <button onClick={() => navigate('/admin/users')}>Users</button>
             </div>
             <div className="buttons-div">
-              <button onClick={()=> navigate('/admin/products')}>Products</button>
+              <button onClick={() => navigate('/admin/products')}>
+                Products
+              </button>
             </div>
             <div className="buttons-div">
-              <button onClick={()=> navigate('/admin/orders')}> Orders</button>
+              <button onClick={() => navigate('/admin/orders')}> Orders</button>
             </div>
             <div className="buttons-div">
-              <button onClick={() =>  navigate('/admin/customer')}>
+              <button onClick={() => navigate('/admin/customer')}>
                 {' '}
                 Customers
               </button>
             </div>
             <div className="buttons-div">
-              <button onClick={() =>  navigate('/admin/seller')}>Sellers</button>
+              <button onClick={() => navigate('/admin/seller')}>Sellers</button>
             </div>
             <div className="buttons-div">
               <button onClick={adminLogout}> Logout</button>
             </div>
           </div>
+
           <div className="table-container">
             <Breadcrumbs />
 
-            {showDashboard && (
+            {loading ? (
+              <div className="loader-overlay loader-overlay--inline">
+                <Loader />
+              </div>
+            ) : (
               <>
-                <div className="add-product-user-btn">
-                  <Button
-                    text="Add Product"
-                    onClick={() => navigate('/admin/add-product')}
-                  ></Button>
-                  <Button
-                    text="Add User"
-                    onClick={() => navigate('/admin/add-user')}
-                  ></Button>
-                </div>
-                <div className="admin-dashboard">
-                  <div className="flipkart-record">
-                    <h2>Total Revenue</h2>
-                    <h3>₹: {dashboardRecord?.totalRevenue}</h3>
-                  </div>
-                  <div className="flipkart-record">
-                    <h2>Total Products</h2>
-                    <h3>{dashboardRecord?.totalProducts}</h3>
-                  </div>
-                  <div className="flipkart-record">
-                    <h2>Total Orders</h2>
-                    <h3>{dashboardRecord?.totalOrders}</h3>
-                  </div>
-                  <div className="flipkart-record">
-                    <h2>Total Users</h2>
-                    <h3>{dashboardRecord?.totalUsers}</h3>
-                  </div>
-                  <div className="flipkart-record">
-                    <h2>Total Customers</h2>
-                    <h3>{dashboardRecord?.totalCustomers}</h3>
-                  </div>
-                  <div className="flipkart-record">
-                    <h2>Total Sellers</h2>
-                    <h3>{dashboardRecord?.totalSellers}</h3>
-                  </div>
-                </div>
-              </>
-            )}
+                {showDashboard && (
+                  <>
+                    <div className="add-product-user-btn">
+                      <Button
+                        text="Add Product"
+                        onClick={() => navigate('/admin/add-product')}
+                      ></Button>
+                      <Button
+                        text="Add User"
+                        onClick={() => navigate('/admin/add-user')}
+                      ></Button>
+                    </div>
+                    <div className="admin-dashboard">
+                      <div className="flipkart-record">
+                        <h2>Total Revenue</h2>
+                        <h3>₹: {dashboardRecord?.totalRevenue}</h3>
+                      </div>
+                      <div className="flipkart-record">
+                        <h2>Total Products</h2>
+                        <h3>{dashboardRecord?.totalProducts}</h3>
+                      </div>
+                      <div className="flipkart-record">
+                        <h2>Total Orders</h2>
+                        <h3>{dashboardRecord?.totalOrders}</h3>
+                      </div>
+                      <div className="flipkart-record">
+                        <h2>Total Users</h2>
+                        <h3>{dashboardRecord?.totalUsers}</h3>
+                      </div>
+                      <div className="flipkart-record">
+                        <h2>Total Customers</h2>
+                        <h3>{dashboardRecord?.totalCustomers}</h3>
+                      </div>
+                      <div className="flipkart-record">
+                        <h2>Total Sellers</h2>
+                        <h3>{dashboardRecord?.totalSellers}</h3>
+                      </div>
+                    </div>
+                  </>
+                )}
 
-            {!showDashboard && (
-              <>
-                <div className="filter-table">
-                  <input
-                    type="text"
-                    placeholder="Search here"
-                    onChange={(event) => filterRecord(event.target.value)}
-                  />
-                </div>
-                <DataTable
-                  className="data-table"
-                  columns={columns}
-                  data={filterData}
-                  customStyles={customStyles}
-                  pagination
-                  paginationPerPage={5}
-                  paginationRowsPerPageOptions={[5, 10, 20, 50]}
-                  responsive
-                    expandableRows
-                 expandableRowsComponent={ExpandedComponent}
-                />
+                {!showDashboard && (
+                  <>
+                    <div className="filter-table">
+                      <input
+                        type="text"
+                        placeholder="Search here"
+                        onChange={(event) => filterRecord(event.target.value)}
+                      />
+                    </div>
+                    <DataTable
+                      className="data-table"
+                      columns={columns}
+                      data={filterData}
+                      customStyles={customStyles}
+                      pagination
+                      paginationPerPage={5}
+                      paginationRowsPerPageOptions={[5, 10, 20, 50]}
+                      responsive
+                      expandableRows
+                      expandableRowsComponent={ExpandedComponent}
+                    />
+                  </>
+                )}
               </>
             )}
           </div>
@@ -181,7 +195,6 @@ function AdminPage({
           )}
         </div>
       </div>
-      }
     </>
   );
 }
@@ -189,15 +202,17 @@ function AdminPage({
 const EnhancedAdmin = withErrorHandling(AdminPage);
 
 const getUserColumns = (deleteOneUser: (id: number) => void) => [
-  { name: 'ID', cell: (row: any) => (
-  <>
-    {row.User_id}
-    {!row.admin_viewed && (
-      <span className="new-badge">NEW</span>
-    )}
-  </>
-), sortable: true },
-  { name: 'Name', selector: (row: any) => row.user_name?.toLowerCase(), sortable: true,},
+  {
+    name: 'ID',
+    cell: (row: any) => (
+      <>
+        {row.User_id}
+        {!row.admin_viewed && <span className="new-badge">NEW</span>}
+      </>
+    ),
+    sortable: true,
+  },
+  { name: 'Name', selector: (row: any) => row.user_name?.toLowerCase(), sortable: true },
   { name: 'Email', selector: (row: any) => row.email, sortable: true },
   { name: 'DOB', selector: (row: any) => row.dob, sortable: true },
   { name: 'Age', selector: (row: any) => row.age, sortable: true },
@@ -214,23 +229,20 @@ const getUserColumns = (deleteOneUser: (id: number) => void) => [
 ];
 
 const getProductColumns = (deleteOneProduct: (id: number) => void) => [
-  { name: 'ID', cell: (row: any) => (
-  <>
-    {row.product_id}
-    {!row.admin_viewed && (
-      <span className="new-badge">NEW</span>
-    )}
-  </>
-), sortable: true },
+  {
+    name: 'ID',
+    cell: (row: any) => (
+      <>
+        {row.product_id}
+        {!row.admin_viewed && <span className="new-badge">NEW</span>}
+      </>
+    ),
+    sortable: true,
+  },
   {
     name: 'image',
     cell: (row: any) => (
-      <img
-        src={row.image_url}
-        alt={row.product_name}
-        width="50"
-        height="50"
-      />
+      <img src={row.image_url} alt={row.product_name} width="50" height="50" />
     ),
   },
   {
@@ -252,23 +264,22 @@ const getProductColumns = (deleteOneProduct: (id: number) => void) => [
   {
     name: 'action',
     cell: (row: any) => (
-      <Button
-        text="Delete"
-        onClick={() => deleteOneProduct(row.product_id)}
-      ></Button>
+      <Button text="Delete" onClick={() => deleteOneProduct(row.product_id)}></Button>
     ),
   },
 ];
 
 const getOrderColumns = (editUserOrder: (payload: any) => void) => [
-  { name: 'ID', cell: (row: any) => (
-  <>
-    {row.order_id}
-    {!row.admin_viewed && (
-      <span className="new-badge">NEW</span>
-    )}
-  </>
-), sortable: true },
+  {
+    name: 'ID',
+    cell: (row: any) => (
+      <>
+        {row.order_id}
+        {!row.admin_viewed && <span className="new-badge">NEW</span>}
+      </>
+    ),
+    sortable: true,
+  },
   {
     name: 'User',
     selector: (row: any) => row.user_name?.toLowerCase(),
@@ -323,7 +334,7 @@ const ExpandedComponent = ({ data }: any) => (
   <div className="expanded-box">
     {Object.entries(data).map(([key, value]) => (
       <div key={key} className="expanded-item">
-        <strong>{key.replace(/_/g, " ")}:</strong> {String(value ?? "-")}
+        <strong>{key.replace(/_/g, ' ')}:</strong> {String(value ?? '-')}
       </div>
     ))}
   </div>
@@ -352,10 +363,10 @@ function AdminContainer() {
       const newRecord = data.filter((record: any) =>
         Object.values(record).some(
           (value) =>
-      value !== null &&
-      (typeof value === 'string' ||
-  typeof value === 'number' ||
-  typeof value === 'boolean') &&
+            value !== null &&
+            (typeof value === 'string' ||
+              typeof value === 'number' ||
+              typeof value === 'boolean') &&
             String(value).toLowerCase().includes(searchValue.toLowerCase())
         )
       );
@@ -404,36 +415,39 @@ function AdminContainer() {
   }, []);
 
   const userColumnsMapped = useMemo(() => getUserColumns(deleteOneUser), [deleteOneUser]);
-  const productColumnsMapped = useMemo(() => getProductColumns(deleteOneProduct), [deleteOneProduct]);
+  const productColumnsMapped = useMemo(
+    () => getProductColumns(deleteOneProduct),
+    [deleteOneProduct]
+  );
   const orderColumnsMapped = useMemo(() => getOrderColumns(editUserOrder), [editUserOrder]);
 
-  const getUsersByRole = useCallback(async (role?: string) => {
-    try {
-      setLoading(true);
-      const users = await fetchAllUser();
-      console.log('users', users)
+  const getUsersByRole = useCallback(
+    async (role?: string) => {
+      try {
+        setLoading(true);
+        const users = await fetchAllUser();
 
-      if (!role) {
-        setData(users[0]);
-        setFilterData(users[0]);
+        if (!role) {
+          setData(users[0]);
+          setFilterData(users[0]);
+          setColumns(userColumnsMapped);
+          setShowDashboard(false);
+          return;
+        }
+
+        const filteredUsers = users[0]?.filter((users: any) => users.role === role);
+        setData(filteredUsers);
+        setFilterData(filteredUsers);
         setColumns(userColumnsMapped);
         setShowDashboard(false);
-        return;
+      } catch (error) {
+        setServerError(error);
+      } finally {
+        setLoading(false);
       }
-
-      const filteredUsers = users[0]?.filter(
-        (users: any) => users.role === role
-      );
-      setData(filteredUsers);
-      setFilterData(filteredUsers);
-      setColumns(userColumnsMapped);
-      setShowDashboard(false);
-    } catch (error) {
-      setServerError(error);
-    } finally {
-      setLoading(false);
-    }
-  }, [userColumnsMapped]);
+    },
+    [userColumnsMapped]
+  );
 
   const getProducts = useCallback(async () => {
     try {
@@ -453,9 +467,7 @@ function AdminContainer() {
   const getDashboardRecord = useCallback(async () => {
     try {
       setLoading(true);
-      console.log('hi')
       const data = await fetchFlipkartRecords();
-      console.log('records',data)
       setDashboardRecord(data);
       setShowDashboard(true);
       navigate('/admin/dashboard');
@@ -470,7 +482,6 @@ function AdminContainer() {
     try {
       setLoading(true);
       const orders = await allOrders();
-      console.log("admin",orders)
       setData(orders);
       setFilterData(orders);
       setShowDashboard(false);
@@ -482,9 +493,7 @@ function AdminContainer() {
     }
   }, [orderColumnsMapped]);
 
-  console.log("Users component rendered");
   useEffect(() => {
-     console.log("Fetching users...");
     if (location.pathname === '/admin/users') {
       getUsersByRole('');
     } else if (location.pathname === '/admin/customer') {

@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from 'react';
 import Footer from '../../components/Footer/Footer';
 import Navbar from '../../components/Navbar/Navbar';
 import { userOrders } from '../../services/ordersApi';
-import withLoader from '../../hoc/withLoader';
 import withErrorHandling from '../../hoc/withErrorHandling';
 import { checkoutOrder } from '../../services/checkoutApi';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -29,6 +28,7 @@ interface OrdersProps {
   showPaymentMethodChoice: boolean;
   addressData: any[];
   orderTotalAmount: number;
+  loading: boolean;
 }
 
 function Orders({
@@ -43,10 +43,9 @@ function Orders({
   setCheckoutData,
   showPaymentMethodChoice,
   addressData,
-
   orderTotalAmount,
+  loading,
 }: Readonly<OrdersProps>) {
-  console.log('message', message);
   return (
     <>
       <Navbar />
@@ -54,105 +53,116 @@ function Orders({
         <div className="orders">
           <Breadcrumbs />
           <h1 className="orders-heading">Orders</h1>
-          {!showPaymentMethodChoice && (
-            <div className="order-items">
-              {orderData?.map((items: any) => (
-                <div className="items-cards" key={items.order_id}>
-                  <h3>Product Name: {items?.product_name}</h3>
-                  <p>Description: {items.description}</p>
-                  <p>quantity: {items.quantity}</p>
-                  <p>price: ₹{items.price}</p>
-                  <p>Order Status: {items.order_status}</p>
-                  <p>Order Date: {items.order_date}</p>
-                  <p>
-                    Address: {items.state} {items.districts} {items.city}
-                  </p>
-                  <p>
-                    {' '}
-                    {items.landmark} {items.pincode}
-                  </p>
-                  <p>Tax: 5%</p>
-                  <p>
-                    Discount percentage:{' '}
-                    {items.discount_percentage ? items.discount_percentage : 0}{' '}
-                    %
-                  </p>
-                  <p>Total Amount: ₹{items.total_amount}</p>
+
+          {loading ? (
+            <div className="orders-loading">
+              <div className="dual-ring"></div>
+            </div>
+          ) : (
+            <>
+              {!showPaymentMethodChoice && (
+                <div className="order-items">
+                  {orderData?.map((items: any) => (
+                    <div className="items-cards" key={items.order_id}>
+                      <h3>Product Name: {items?.product_name}</h3>
+                      <p>Description: {items.description}</p>
+                      <p>quantity: {items.quantity}</p>
+                      <p>price: ₹{items.price}</p>
+                      <p>Order Status: {items.order_status}</p>
+                      <p>Order Date: {items.order_date}</p>
+                      <p>
+                        Address: {items.state} {items.districts} {items.city}
+                      </p>
+                      <p>
+                        {' '}
+                        {items.landmark} {items.pincode}
+                      </p>
+                      <p>Tax: 5%</p>
+                      <p>
+                        Discount percentage:{' '}
+                        {items.discount_percentage
+                          ? items.discount_percentage
+                          : 0}{' '}
+                        %
+                      </p>
+                      <p>Total Amount: ₹{items.total_amount}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
+              )}
 
-          {showPaymentMethodChoice && (
-            <div className="overlay">
-              <div className="total-price">
-                <h3>Total Price: {orderTotalAmount}</h3>
-              </div>
-              <select
-                value={checkoutData.payment_method_name}
-                onChange={(event) =>
-                  setCheckoutData((prev: any) => ({
-                    ...prev,
-                    payment_method_name: event?.target.value,
-                  }))
-                }
-              >
-                <option value="" disabled>
-                  -- Select Payment Method --
-                </option>
-                <option value="COD">COD</option>
-                <option value="UPI">UPI</option>
-                <option value="CARD">CARD</option>
-                <option value="Netbanking">Netbanking</option>
-                <option value="Wallet">Wallet</option>
-              </select>
+              {showPaymentMethodChoice && (
+                <div className="overlay">
+                  <div className="total-price">
+                    <h3>Total Price: {orderTotalAmount}</h3>
+                  </div>
+                  <select
+                    value={checkoutData.payment_method_name}
+                    onChange={(event) =>
+                      setCheckoutData((prev: any) => ({
+                        ...prev,
+                        payment_method_name: event?.target.value,
+                      }))
+                    }
+                  >
+                    <option value="" disabled>
+                      -- Select Payment Method --
+                    </option>
+                    <option value="COD">COD</option>
+                    <option value="UPI">UPI</option>
+                    <option value="CARD">CARD</option>
+                    <option value="Netbanking">Netbanking</option>
+                    <option value="Wallet">Wallet</option>
+                  </select>
 
-              <div className="order-addresses">
-                {addressData[0] ? (
-                  addressData.map((data) => (
-                    <button
-                      key={data.address_id}
-                      className={`order-address-card ${checkoutData.address_status === data.user_address_status ? 'selected-address' : ''}`}
-                      onClick={() =>
-                        setCheckoutData((prev: any) => ({
-                          ...prev,
-                          address_status: data.user_address_status,
-                        }))
-                      }
-                    >
-                      <h3 className="user-address-status">
-                        {data.user_address_status} Address
-                      </h3>
-                      <p>
-                        {data.country} {data.state}
-                      </p>
-                      <p>
-                        {data.districts} {data.city}
-                      </p>
-                      <p>{data.street}</p>
-                      <p>{data.landmark}</p>
-                      <p>{data.pincode}</p>
-                    </button>
-                  ))
-                ) : (
-                  <Button
-                    text="Add order address"
-                    onClick={() => navigate('/address')}
-                  ></Button>
-                )}
-              </div>
-              <div className="order-confirm-cancel-btn">
-                <button onClick={handleConfirmOrder}>Confirm</button>
-                <button onClick={handleCancelOrder}>Cancel</button>
-              </div>
-              <p className="error">{message}</p>
-            </div>
-          )}
+                  <div className="order-addresses">
+                    {addressData[0] ? (
+                      addressData.map((data) => (
+                        <button
+                          key={data.address_id}
+                          className={`order-address-card ${checkoutData.address_status === data.user_address_status ? 'selected-address' : ''}`}
+                          onClick={() =>
+                            setCheckoutData((prev: any) => ({
+                              ...prev,
+                              address_status: data.user_address_status,
+                            }))
+                          }
+                        >
+                          <h3 className="user-address-status">
+                            {data.user_address_status} Address
+                          </h3>
+                          <p>
+                            {data.country} {data.state}
+                          </p>
+                          <p>
+                            {data.districts} {data.city}
+                          </p>
+                          <p>{data.street}</p>
+                          <p>{data.landmark}</p>
+                          <p>{data.pincode}</p>
+                        </button>
+                      ))
+                    ) : (
+                      <Button
+                        text="Add order address"
+                        onClick={() => navigate('/address')}
+                      ></Button>
+                    )}
+                  </div>
+                  <div className="order-confirm-cancel-btn">
+                    <button onClick={handleConfirmOrder}>Confirm</button>
+                    <button onClick={handleCancelOrder}>Cancel</button>
+                  </div>
+                  <p className="error">{message}</p>
+                </div>
+              )}
 
-          {message && (
-            <div className="empty-cart-div">
-              <h3>{message}</h3>
-            </div>
+              {message && !showPaymentMethodChoice && (
+                <div className="empty-cart-div">
+                  <h3>{message}</h3>
+                </div>
+              )}
+            </>
           )}
 
           {showPopup && (
@@ -170,7 +180,7 @@ function Orders({
   );
 }
 
-const EnhancedOrders = withErrorHandling(withLoader(Orders));
+const EnhancedOrders = withErrorHandling(Orders);
 
 function OrdersContainer() {
   const navigate = useNavigate();
@@ -196,7 +206,6 @@ function OrdersContainer() {
       setLoading(true);
       setShowPaymentMethodChoice(false);
       const orderData = await userOrders();
-      console.log(orderData);
       setMessage(orderData.message);
       dispatch(setOrderItem(orderData[0]));
     } catch (error) {
@@ -219,17 +228,17 @@ function OrdersContainer() {
       setLoading(true);
       if (!addressData[0]) {
         navigate('/address');
-      }if(!checkoutData.payment_method_name){
-        setMessage('Please Select Payment Method')
+      }
+      if (!checkoutData.payment_method_name) {
+        setMessage('Please Select Payment Method');
         return;
       }
-      if(!checkoutData.address_status){
-        setMessage('Please Select order address')
-        return
+      if (!checkoutData.address_status) {
+        setMessage('Please Select order address');
+        return;
       }
       const data = await checkoutOrder(checkoutData);
       setMessage(data.message);
-      console.log('ss', data.message);
       setShowPopup(true);
     } catch (error) {
       setServerError(error);
